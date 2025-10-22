@@ -1,14 +1,16 @@
 const express = require('express')
 const dotenv = require('dotenv')
+dotenv.config()
+
 const passport = require('passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+
 require('./config/passport')
 const authRoutes = require('./routes/authRoutes')
 const passwordRoutes = require('./routes/passwordRoutes')
 
-dotenv.config()
 const app = express()
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
