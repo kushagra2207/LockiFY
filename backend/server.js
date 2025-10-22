@@ -16,7 +16,7 @@ const app = express()
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
-app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true }))
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }))
 app.use(passport.initialize())
 app.use(passport.session())
 
