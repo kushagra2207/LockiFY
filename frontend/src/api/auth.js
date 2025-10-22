@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_BASE_URL
 
 export async function getCurrentUser() {
-    const res = await fetch(`${API_URL}/auth/me`, {
+    const res = await fetch(`${API_URL}/api/auth/me`, {
         method: 'GET',
         credentials: "include"
     })
@@ -13,7 +13,7 @@ export async function getCurrentUser() {
 }
 
 export async function logoutUser() {
-    const res = await fetch(`${API_URL}/auth/logout`, {
+    const res = await fetch(`${API_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
     })
@@ -24,5 +24,5 @@ export async function logoutUser() {
 }
 
 export function loginWithGoogle() {
-    window.location.href = `${API_URL}/auth/google`
+    window.location.href = `${API_URL}/api/auth/google`
 }
