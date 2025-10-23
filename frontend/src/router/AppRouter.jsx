@@ -29,8 +29,11 @@ const AppRouterProvider = () => {
                         </ProtectedRoute>
                     )
                 },
-                { path: "*", element: <NotFound /> }
             ]
+        },
+        {
+            path: "*",
+            element: <NotFound />
         }
     ])
 
