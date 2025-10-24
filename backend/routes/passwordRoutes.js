@@ -14,6 +14,6 @@ router.use(verifyToken)
 router.get('/', getPasswords)
 router.post('/', addPassword)
 router.put('/:id', updatePassword)
-router.delete(':id', deletePassword)
+router.delete('/:id', deletePassword)
 
 module.exports = router
