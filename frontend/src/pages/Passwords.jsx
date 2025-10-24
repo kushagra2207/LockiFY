@@ -87,7 +87,12 @@ const Passwords = () => {
     })
   }
 
-  const isFormValid = Object.values(form).every(v => v.trim().length > 0)
+  const isFormValid = Object.entries(form).every(([key, v]) => {
+    if (key === 'id') return true
+    if (typeof v === 'string') return v.trim().length > 0
+    return v !== null && v !== undefined && v !== ''
+  })
+
 
   return (
     <>
@@ -174,7 +179,7 @@ const Passwords = () => {
                     </td>
                     <td className='w-[28%] py-2 border border-white'>
                       <div className='flex justify-center items-center gap-1'>
-                        <span className='break-all'>{item.password}</span>
+                        <span className='break-all'>{'*'.repeat(item.password?.length)}</span>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => copyText(item.password)}>
                           <img
