@@ -37,11 +37,11 @@ const Passwords = () => {
     try {
       if (!isEdit.current) {
         const newPassword = await addPassword(form)
-        setPasswordArray([...passwordArray, newPassword])
+        setPasswordArray([...passwordArray, newPassword.data])
         toast.success('Password Saved Successfully!')
       } else {
         const updated = await updatePassword(form.id, form)
-        setPasswordArray(passwordArray.map(item => item.id === updated.id ? updated : item))
+        setPasswordArray(passwordArray.map(item => item.id === updated.data.id ? updated.data : item))
         toast.success('Password Updated Successfully!')
         isEdit.current = false
       }
