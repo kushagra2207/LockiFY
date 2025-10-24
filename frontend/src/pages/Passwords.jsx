@@ -92,7 +92,7 @@ const Passwords = () => {
   return (
     <>
       <ToastContainer theme="dark" transition={Bounce} />
-      <div className="absolute inset-0 -z-10 h-full w-full bg-blue-100 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+      <div className="absolute inset-0 -z-10 h-full w-full bg-blue-100 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]">
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-400 opacity-20 blur-[100px]"></div>
       </div>
 
@@ -149,9 +149,12 @@ const Passwords = () => {
                         <a href={item.site} target='_blank' className='break-all'>{item.site}</a>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => copyText(item.site)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 
-                          23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 
-                          56.5T720-240H360Z"/></svg>
+                          <img
+                            src="/icons/copy.svg"
+                            alt="Copy Icon"
+                            height="25"
+                            width="25"
+                          />
                         </div>
                       </div>
                     </td>
@@ -160,9 +163,12 @@ const Passwords = () => {
                         <span className='break-all'>{item.username}</span>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => copyText(item.username)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 
-                          23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 
-                          56.5T720-240H360Z"/></svg>
+                          <img
+                            src="/icons/copy.svg"
+                            alt="Copy Icon"
+                            height="25"
+                            width="25"
+                          />
                         </div>
                       </div>
                     </td>
@@ -171,9 +177,12 @@ const Passwords = () => {
                         <span className='break-all'>{item.password}</span>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => copyText(item.password)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="24px"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 
-                          23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 
-                          56.5T720-240H360Z"/></svg>
+                          <img
+                            src="/icons/copy.svg"
+                            alt="Copy Icon"
+                            height="25"
+                            width="25"
+                          />
                         </div>
                       </div>
                     </td>
@@ -181,14 +190,21 @@ const Passwords = () => {
                       <div className='flex justify-center items-center'>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => handleEdit(item.id)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                            <path d="M200-200h57l391-391-57-57-391 391v57Z"/></svg>
+                          <img
+                            src="/icons/edit.svg"
+                            alt="Copy Icon"
+                            height="25"
+                            width="25"
+                          />
                         </div>
                         <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
                           onClick={() => handleDelete(item.id)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
-                            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h560v520q0 33-23.5 
-                            56.5T680-120H280Z"/></svg>
+                          <img
+                            src="/icons/delete.svg"
+                            alt="Copy Icon"
+                            height="25"
+                            width="25"
+                          />
                         </div>
                       </div>
                     </td>
