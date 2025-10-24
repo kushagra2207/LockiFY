@@ -32,12 +32,15 @@ const addPassword = async (req, res) => {
     const { site, username, password } = req.body;
 
     const encrypted = cryptojs.AES.encrypt(password, ENCRYPTION_KEY).toString();
-    await pool.query(
-      "INSERT INTO passwords (user_id, site, username, password_encrypted) VALUES ($1,$2,$3,$4)",
+    
+    const result = await pool.query(
+      "INSERT INTO passwords (user_id, site, username, password_encrypted) VALUES ($1,$2,$3,$4) RETURNING *",
       [userId, site, username, encrypted]
     );
+    const newPassword = result.rows[0]
+    delete newPassword.user_id
 
-    res.json({ message: "Password added successfully" });
+    res.json({ data: newPassword, message: "Password added successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to add password" });
@@ -61,7 +64,10 @@ const updatePassword = async (req, res) => {
       return res.status(404).json({ message: "Password not found" });
     }
 
-    res.json({ message: "Password updated successfully" });
+    const updatedPassword = result.rows[0]
+    delete updatedPassword.user_id
+
+    res.json({ data: updatedPassword, message: "Password updated successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to update password" });
