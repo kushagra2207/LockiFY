@@ -6,14 +6,20 @@ const {
     updatePassword, 
     deletePassword 
 } = require('../controllers/passwordController')
+const { 
+    passwordGetLimiter, 
+    passwordCreateLimiter, 
+    passwordUpdateLimiter, 
+    passwordDeleteLimiter 
+} = require('../middleware/rateLimiters')
 
 const router = express.Router()
 
 router.use(verifyToken)
 
-router.get('/', getPasswords)
-router.post('/', addPassword)
-router.put('/:id', updatePassword)
-router.delete('/:id', deletePassword)
+router.get('/', passwordGetLimiter, getPasswords)
+router.post('/', passwordCreateLimiter, addPassword)
+router.put('/:id', passwordUpdateLimiter, updatePassword)
+router.delete('/:id', passwordDeleteLimiter, deletePassword)
 
 module.exports = router
