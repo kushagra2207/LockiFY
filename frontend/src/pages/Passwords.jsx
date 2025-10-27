@@ -96,6 +96,40 @@ const Passwords = () => {
     return v !== null && v !== undefined && v !== ''
   })
 
+  const shuffle = (str) => {
+    const arr = str.split('');
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.join('');
+  }
+
+  const generateStrongPassword = () => {
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz'
+    const numbers = '0123456789'
+    const special = '!@#$%^&*'
+
+    const getRandomChars = (chars, count) =>
+      Array.from({ length: count }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
+
+    const upperCount = 2 + Math.floor(Math.random() * 2)
+    const numCount = 2 + Math.floor(Math.random() * 2)
+    const specialCount = 2 + Math.floor(Math.random() * 2)
+
+    const upperPart = getRandomChars(uppercase, upperCount)
+    const numPart = getRandomChars(numbers, numCount)
+    const specialPart = getRandomChars(special, specialCount)
+
+    const totalLength = 12 + Math.floor(Math.random() * 5)
+    const remainingCount = totalLength - (upperCount + numCount + specialCount)
+    const lowerPart = getRandomChars(lowercase, remainingCount)
+
+    let password = shuffle(upperPart + numPart + lowerPart + specialPart)
+
+    setForm(prev => ({ ...prev, password }))
+  }
 
   return (
     <>
@@ -120,14 +154,14 @@ const Passwords = () => {
             <input value={form.username} onChange={handleChange} placeholder='Enter Username'
               className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' type="text" name='username' />
             <div className='w-full relative'>
-              <input 
-              ref={passwordRef} 
-              value={form.password} 
-              onChange={handleChange} 
-              placeholder='Enter Password' 
-              className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' 
-              type="password" 
-              name='password' />
+              <input
+                ref={passwordRef}
+                value={form.password}
+                onChange={handleChange}
+                placeholder='Enter Password'
+                className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none'
+                type="password"
+                name='password' />
               <span className='absolute right-2 top-1.75 cursor-pointer' onClick={showPassword}>
                 <img ref={ref} width={20} src="icons/eye.png" alt="eye" />
               </span>
@@ -135,12 +169,12 @@ const Passwords = () => {
                 <div className='mt-3'>
                   <div className='h-2 bg-gray-200 rounded-full'>
                     <div
-                    className={`h-2 rounded-full transition-all duration-300 ${ strengthScore === 0 ? 'bg-red-500 w-1/5' : 
-                    strengthScore === 1 ? 'bg-orange-500 w-2/5' : 
-                    strengthScore === 2 ? 'bg-yellow-500 w-3/5' : 
-                    strengthScore === 3 ? 'bg-green-400 w-4/5' :
-                    'bg-green-600 w-full'
-                  }`}
+                      className={`h-2 rounded-full transition-all duration-300 ${strengthScore === 0 ? 'bg-red-500 w-1/5' :
+                        strengthScore === 1 ? 'bg-orange-500 w-2/5' :
+                          strengthScore === 2 ? 'bg-yellow-500 w-3/5' :
+                            strengthScore === 3 ? 'bg-green-400 w-4/5' :
+                              'bg-green-600 w-full'
+                        }`}
                     ></div>
                     <p className='text-xs mt-1 text-gray-700'>
                       Strength: {['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strengthScore]}
@@ -150,6 +184,13 @@ const Passwords = () => {
               )}
             </div>
           </div>
+
+          <button
+            onClick={generateStrongPassword}
+            className="text-sm text-sky-700 underline underline-offset-2 hover:text-sky-900 transition cursor-pointer"
+          >
+            Generate Strong Password
+          </button>
 
           <button onClick={savePassword} disabled={!isFormValid}
             className='flex justify-center items-center bg-sky-500 hover:bg-sky-600 active:bg-sky-700 disabled:cursor-not-allowed disabled:hover:bg-sky-500 rounded-full w-fit px-4 py-2 gap-2 border-sky-900'>
