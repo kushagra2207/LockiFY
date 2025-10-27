@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import zxcvbn from 'zxcvbn'
 
 import { getPasswords, addPassword, updatePassword, deletePassword } from '../api/passwords'
 
@@ -10,6 +11,8 @@ const Passwords = () => {
   const isEdit = useRef(false)
   const [form, setForm] = useState({ site: "", username: "", password: "" })
   const [passwordArray, setPasswordArray] = useState([])
+  const passStrenth = zxcvbn(form.password)
+  const strengthScore = passStrenth.score
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,23 +114,45 @@ const Passwords = () => {
 
         <div className='flex flex-col items-center w-full sm:w-4/5 mx-auto gap-8 p-4'>
           <input value={form.site} onChange={handleChange} placeholder='Enter Website URL'
-            className='border border-sky-600 rounded-full px-4 py-1 w-full' type="text" name='site' />
+            className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' type="text" name='site' />
 
           <div className="flex flex-col sm:flex-row justify-between gap-8 w-full">
             <input value={form.username} onChange={handleChange} placeholder='Enter Username'
-              className='border border-sky-600 rounded-full px-4 py-1 w-full' type="text" name='username' />
+              className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' type="text" name='username' />
             <div className='w-full relative'>
-              <input ref={passwordRef} value={form.password} onChange={handleChange}
-                placeholder='Enter Password' className='border border-sky-600 rounded-full px-4 py-1 w-full'
-                type="password" name='password' />
+              <input 
+              ref={passwordRef} 
+              value={form.password} 
+              onChange={handleChange} 
+              placeholder='Enter Password' 
+              className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' 
+              type="password" 
+              name='password' />
               <span className='absolute right-2 top-1.75 cursor-pointer' onClick={showPassword}>
                 <img ref={ref} width={20} src="icons/eye.png" alt="eye" />
               </span>
+              {form.password && (
+                <div className='mt-3'>
+                  <div className='h-2 bg-gray-200 rounded-full'>
+                    <div
+                    className={`h-2 rounded-full transition-all duration-300 ${ strengthScore === 0 ? 'bg-red-500 w-1/5' : 
+                    strengthScore === 1 ? 'bg-orange-500 w-2/5' : 
+                    strengthScore === 2 ? 'bg-yellow-500 w-3/5' : 
+                    strengthScore === 3 ? 'bg-green-400 w-4/5' :
+                    'bg-green-600 w-full'
+                  }`}
+                    ></div>
+                    <p className='text-xs mt-1 text-gray-700'>
+                      Strength: {['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strengthScore]}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
           <button onClick={savePassword} disabled={!isFormValid}
-            className='flex justify-center items-center bg-sky-500 hover:bg-sky-600 active:bg-sky-700 disabled:cursor-not-allowed disabled:hover:bg-sky-500 rounded-full w-fit px-6 py-2 gap-2 border-sky-900 border'>
+            className='flex justify-center items-center bg-sky-500 hover:bg-sky-600 active:bg-sky-700 disabled:cursor-not-allowed disabled:hover:bg-sky-500 rounded-full w-fit px-4 py-2 gap-2 border-sky-900'>
             <lord-icon src="https://cdn.lordicon.com/efxgwrkc.json" trigger="hover"></lord-icon>
             <span className='text-lg'>Save</span>
           </button>
