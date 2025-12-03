@@ -23,29 +23,28 @@ const Home = () => {
           encrypted storage make managing credentials feel effortless.
         </div>
 
-        {/* Section 1: Why LockiFY */}
         <section className="mt-4 w-full space-y-5 px-1 sm:px-0">
           <h2 className="text-3xl font-semibold text-slate-900 text-center">Why LockiFY</h2>
           <div className="flex w-full flex-col gap-5 md:grid md:grid-cols-2">
-            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
+            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 hover:bg-sky-50 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
               <p className="text-lg font-semibold text-slate-900">End-to-end encryption</p>
               <p className="mt-1 text-sm md:text-base text-slate-600">
                 Passwords are encrypted before they touch the database, staying unreadable to anyone but you.
               </p>
             </div>
-            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
+            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 hover:bg-sky-50 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
               <p className="text-lg font-semibold text-slate-900">Google sign-in</p>
               <p className="mt-1 text-sm md:text-base text-slate-600">
                 Skip extra accounts and authenticate quickly with Google OAuth while keeping sessions secure.
               </p>
             </div>
-            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
+            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 hover:bg-sky-50 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
               <p className="text-lg font-semibold text-slate-900">Strength insights</p>
               <p className="mt-1 text-sm md:text-base text-slate-600">
                 Real-time strength feedback powered by zxcvbn helps you build resilient, unique passwords.
               </p>
             </div>
-            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
+            <div className="rounded-3xl border border-sky-50 bg-sky-50/80 hover:bg-sky-50 p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-100 hover:shadow-md">
               <p className="text-lg font-semibold text-slate-900">One-click actions</p>
               <p className="mt-1 text-sm md:text-base text-slate-600">
                 Copy usernames, passwords, or URLs instantly and manage entries without breaking your flow.
@@ -54,11 +53,10 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Section 2: Three steps */}
         <section className="mt-10 w-full space-y-5 px-1 sm:px-0">
           <h2 className="text-3xl font-semibold text-slate-900 text-center">Three steps</h2>
           <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 hover:bg-sky-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-sky-100 text-base font-semibold text-sky-700">
                 01
               </span>
@@ -69,7 +67,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 hover:bg-sky-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-sky-100 text-base font-semibold text-sky-700">
                 02
               </span>
@@ -80,7 +78,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex flex-1 items-start gap-4 rounded-3xl border border-slate-100 bg-sky-50/80 hover:bg-sky-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-sky-100 text-base font-semibold text-sky-700">
                 03
               </span>

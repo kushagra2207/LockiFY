@@ -96,13 +96,7 @@ const Passwords = () => {
 
   const copyText = (text) => {
     navigator.clipboard.writeText(text)
-    toast('Copied To Clipboard!', {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      theme: "dark",
-      transition: Bounce,
-    })
+    toast.success('Copied To Clipboard!')
   }
 
   const isFormValid = Object.entries(form).every(([key, v]) => {
@@ -148,7 +142,6 @@ const Passwords = () => {
 
   return (
     <>
-      <ToastContainer theme="dark" transition={Bounce} />
       <div className="absolute inset-0 -z-10 h-full w-full bg-blue-100 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]">
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-400 opacity-20 blur-[100px]"></div>
       </div>
@@ -161,7 +154,7 @@ const Passwords = () => {
         </h1>
         <p className='text-sky-900 text-lg text-center'>Your own password manager</p>
 
-        <div ref={formRef} className="mt-8 w-full max-w-3xl mx-auto rounded-3xl border border-white/70 bg-white/80 p-6 sm:p-8 shadow-xl backdrop-blur flex flex-col gap-6">
+        <div ref={formRef} className="mt-8 w-full max-w-3xl mx-auto rounded-3xl border border-white/70 bg-gradient-to-br from-sky-100 to-white p-6 sm:p-8 shadow-xl backdrop-blur flex flex-col gap-6">
           <div className="space-y-2">
             <label htmlFor="site" className="text-sm font-medium text-sky-900">Website URL</label>
             <input
@@ -258,7 +251,6 @@ const Passwords = () => {
           {passwordArray.length === 0 && <div>No passwords to show</div>}
           {passwordArray.length > 0 && (
             <>
-              {/* Mobile: 2-column table */}
               <table className="table-auto w-full rounded-lg overflow-hidden md:hidden">
                 <thead className='bg-sky-800 text-white'>
                   <tr>
@@ -358,7 +350,6 @@ const Passwords = () => {
                 </tbody>
               </table>
 
-              {/* Desktop: 4-column table */}
               <table className="table-auto w-full rounded-lg overflow-hidden hidden md:table">
                 <thead className='bg-sky-800 text-white'>
                   <tr>
