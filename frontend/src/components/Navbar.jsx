@@ -1,9 +1,20 @@
 import { Link } from 'react-router-dom'
 import GoogleSignInButton from './GoogleSigninButton'
 import { useAuth } from '../context/authContext'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Navbar = () => {
   const { user, loading, handleLogin, handleLogout } = useAuth()
+
+  const safeLogin = async () => {
+    try {
+      await handleLogin()
+    } catch (err) {
+      toast.error("Login service unavailable. Please try again later.")
+      console.error("Login failed:", err)
+    }
+  }
 
   return (
     <nav className="bg-slate-800 text-white">
@@ -16,9 +27,8 @@ const Navbar = () => {
           </Link>
         </div>
         <div
-          className={`flex w-full items-center gap-3 sm:w-auto ${
-            !loading && !user ? 'justify-center' : 'justify-between sm:justify-end'
-          }`}
+          className={`flex w-full items-center gap-3 sm:w-auto ${!loading && !user ? 'justify-center' : 'justify-between sm:justify-end'
+            }`}
         >
           <div className="text-sm sm:text-base">
             {loading ? null : !user ? (
@@ -31,7 +41,7 @@ const Navbar = () => {
           </div>
           <div className="flex-shrink-0">
             {loading ? null : !user ? (
-              <GoogleSignInButton onClick={handleLogin} />
+              <GoogleSignInButton onClick={safeLogin} />
             ) : (
               <button
                 onClick={handleLogout}
