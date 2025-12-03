@@ -6,13 +6,24 @@ import zxcvbn from 'zxcvbn'
 import { getPasswords, addPassword, updatePassword, deletePassword } from '../api/passwords'
 
 const Passwords = () => {
-  const ref = useRef()
-  const passwordRef = useRef()
+  const formRef = useRef(null)
+  const tableRef = useRef(null)
   const isEdit = useRef(false)
+  const scrollToTable = useRef(false)
   const [form, setForm] = useState({ site: "", username: "", password: "" })
   const [passwordArray, setPasswordArray] = useState([])
-  const passStrenth = zxcvbn(form.password)
-  const strengthScore = passStrenth.score
+  const [showPwd, setShowPwd] = useState(false)
+  const passStrength = zxcvbn(form.password)
+  const strengthScore = passStrength.score
+
+  useEffect(() => {
+    if (scrollToTable.current) {
+      requestAnimationFrame(() => {
+        tableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        scrollToTable.current = false
+      })
+    }
+  }, [passwordArray])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,27 +37,29 @@ const Passwords = () => {
     fetchData()
   }, [])
 
-  const showPassword = () => {
-    if (ref.current.src.includes("icons/eyecross.png")) {
-      ref.current.src = "icons/eye.png"
-      passwordRef.current.type = "password"
-    } else {
-      ref.current.src = "icons/eyecross.png"
-      passwordRef.current.type = "text"
-    }
+  const toggleShowPassword = () => {
+    setShowPwd(s => !s)
   }
 
   const savePassword = async () => {
     try {
       if (!isEdit.current) {
         const newPassword = await addPassword(form)
-        setPasswordArray([...passwordArray, newPassword.data])
+
+        const entry = { ...newPassword.data, password: form.password }
+        setPasswordArray((prev) => [...prev, entry])
+
         toast.success('Password Saved Successfully!')
+        scrollToTable.current = true
       } else {
         const updated = await updatePassword(form.id, form)
-        setPasswordArray(passwordArray.map(item => item.id === updated.data.id ? updated.data : item))
+
+        const updatedEntry = { ...updated.data, password: form.password }
+        setPasswordArray((prev) => prev.map(item => item.id === updatedEntry.id ? updatedEntry : item))
+
         toast.success('Password Updated Successfully!')
         isEdit.current = false
+        scrollToTable.current = true
       }
       setForm({ site: "", username: "", password: "" })
     } catch (err) {
@@ -72,6 +85,8 @@ const Passwords = () => {
     if (entry) {
       setForm(entry)
       isEdit.current = true
+
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
@@ -146,143 +161,285 @@ const Passwords = () => {
         </h1>
         <p className='text-sky-900 text-lg text-center'>Your own password manager</p>
 
-        <div className='flex flex-col items-center w-full sm:w-4/5 mx-auto gap-8 p-4'>
-          <input value={form.site} onChange={handleChange} placeholder='Enter Website URL'
-            className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' type="text" name='site' />
+        <div ref={formRef} className="mt-8 w-full max-w-3xl mx-auto rounded-3xl border border-white/70 bg-white/80 p-6 sm:p-8 shadow-xl backdrop-blur flex flex-col gap-6">
+          <div className="space-y-2">
+            <label htmlFor="site" className="text-sm font-medium text-sky-900">Website URL</label>
+            <input
+              id="site"
+              value={form.site}
+              onChange={handleChange}
+              placeholder='https://example.com'
+              className='w-full rounded-2xl border border-sky-100 bg-white px-4 py-3 text-sm shadow-sm outline-none transition focus:border-sky-400'
+              type="text"
+              name='site'
+            />
+          </div>
 
-          <div className="flex flex-col sm:flex-row justify-between gap-8 w-full">
-            <input value={form.username} onChange={handleChange} placeholder='Enter Username'
-              className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none' type="text" name='username' />
-            <div className='w-full relative'>
+          <div className="flex flex-col sm:flex-row justify-between gap-6 w-full">
+            <div className="flex-1 space-y-2">
+              <label htmlFor="username" className="text-sm font-medium text-sky-900">Username</label>
               <input
-                ref={passwordRef}
-                value={form.password}
+                id="username"
+                value={form.username}
                 onChange={handleChange}
-                placeholder='Enter Password'
-                className='border border-sky-600 rounded-full px-4 py-1 w-full focus:outline-none'
-                type="password"
-                name='password' />
-              <span className='absolute right-2 top-1.75 cursor-pointer' onClick={showPassword}>
-                <img ref={ref} width={20} src="icons/eye.png" alt="eye" />
-              </span>
-              {form.password && (
-                <div className='mt-3'>
-                  <div className='h-2 bg-gray-200 rounded-full'>
-                    <div
-                      className={`h-2 rounded-full transition-all duration-300 ${strengthScore === 0 ? 'bg-red-500 w-1/5' :
-                        strengthScore === 1 ? 'bg-orange-500 w-2/5' :
-                          strengthScore === 2 ? 'bg-yellow-500 w-3/5' :
-                            strengthScore === 3 ? 'bg-green-400 w-4/5' :
-                              'bg-green-600 w-full'
-                        }`}
-                    ></div>
-                    <p className='text-xs mt-1 text-gray-700'>
-                      Strength: {['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strengthScore]}
-                    </p>
-                  </div>
+                placeholder='Enter username'
+                className='w-full rounded-2xl border border-sky-100 bg-white px-4 py-3 text-sm shadow-sm outline-none transition focus:border-sky-400'
+                type="text"
+                name='username'
+              />
+            </div>
+            <div className='flex-1 space-y-2'>
+              <label htmlFor="password" className="text-sm font-medium text-sky-900">Password</label>
+              <div className="relative">
+                <input
+                  id="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder='Enter password'
+                  className='w-full rounded-2xl border border-sky-100 bg-white px-4 py-3 pr-10 text-sm shadow-sm outline-none transition focus:border-sky-400'
+                  type={showPwd ? "text" : "password"}
+                  name='password'
+                />
+                <span
+                  className='absolute inset-y-0 right-3 flex items-center cursor-pointer rounded-full p-1'
+                  onClick={toggleShowPassword}
+                >
+                  <img width={20} src={showPwd ? "/icons/eyecross.png" : "/icons/eye.png"} alt="eye" />
+                </span>
+              </div>
+              <div className='mt-3'>
+                <div className='h-2 bg-gray-200 rounded-full'>
+                  <div
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      !form.password
+                        ? 'w-0 bg-transparent'
+                        : strengthScore === 0
+                          ? 'bg-red-500 w-1/5'
+                          : strengthScore === 1
+                            ? 'bg-orange-500 w-2/5'
+                            : strengthScore === 2
+                              ? 'bg-yellow-500 w-3/5'
+                              : strengthScore === 3
+                                ? 'bg-green-400 w-4/5'
+                                : 'bg-green-600 w-full'
+                    }`}
+                  ></div>
                 </div>
-              )}
+                {form.password && (
+                  <p className='text-xs mt-1 text-gray-700'>
+                    Strength: {['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strengthScore]}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
-          <button
-            onClick={generateStrongPassword}
-            className="text-sm text-sky-700 underline underline-offset-2 hover:text-sky-900 transition cursor-pointer"
-          >
-            Generate Strong Password
-          </button>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <button
+              onClick={generateStrongPassword}
+              className="text-sm font-medium text-sky-700 underline underline-offset-4 hover:text-sky-900 transition cursor-pointer"
+            >
+              Generate a strong password
+            </button>
 
-          <button onClick={savePassword} disabled={!isFormValid}
-            className='flex justify-center items-center bg-sky-500 hover:bg-sky-600 active:bg-sky-700 disabled:cursor-not-allowed disabled:hover:bg-sky-500 rounded-full w-fit px-4 py-2 gap-2 border-sky-900'>
-            <lord-icon src="https://cdn.lordicon.com/efxgwrkc.json" trigger="hover"></lord-icon>
-            <span className='text-lg'>Save</span>
-          </button>
+            <button
+              onClick={savePassword}
+              disabled={!isFormValid}
+              className='flex justify-center items-center rounded-full w-full sm:w-auto px-6 py-3 gap-2 border border-transparent bg-sky-500 text-white text-base font-semibold shadow-md transition hover:bg-sky-600 active:bg-sky-700 disabled:cursor-not-allowed disabled:bg-sky-200 disabled:text-slate-500'
+            >
+              <lord-icon src="https://cdn.lordicon.com/efxgwrkc.json" trigger="hover"></lord-icon>
+              <span>{!isEdit.current ? "Save" : "Update"}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="passwords">
+        <div className="passwords mt-4" ref={tableRef}>
           <h2 className='font-bold text-2xl py-4'>Your Passwords</h2>
           {passwordArray.length === 0 && <div>No passwords to show</div>}
           {passwordArray.length > 0 && (
-            <table className="table-auto w-full rounded-lg overflow-hidden">
-              <thead className='bg-sky-800 text-white'>
-                <tr>
-                  <th className='py-2'>Site</th>
-                  <th className='py-2'>Username</th>
-                  <th className='py-2'>Password</th>
-                  <th className='py-2'>Actions</th>
-                </tr>
-              </thead>
-              <tbody className='bg-sky-200'>
-                {passwordArray.map(item => (
-                  <tr key={item.id}>
-                    <td className='w-[28%] py-2 border border-white'>
-                      <div className='flex justify-center items-center gap-1'>
-                        <a href={item.site} target='_blank' className='break-all'>{item.site}</a>
-                        <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
-                          onClick={() => copyText(item.site)}>
-                          <img
-                            src="/icons/copy.svg"
-                            alt="Copy Icon"
-                            height="25"
-                            width="25"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className='w-[28%] py-2 border border-white'>
-                      <div className='flex justify-center items-center gap-1'>
-                        <span className='break-all'>{item.username}</span>
-                        <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
-                          onClick={() => copyText(item.username)}>
-                          <img
-                            src="/icons/copy.svg"
-                            alt="Copy Icon"
-                            height="25"
-                            width="25"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className='w-[28%] py-2 border border-white'>
-                      <div className='flex justify-center items-center gap-1'>
-                        <span className='break-all'>{'*'.repeat(item.password?.length)}</span>
-                        <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
-                          onClick={() => copyText(item.password)}>
-                          <img
-                            src="/icons/copy.svg"
-                            alt="Copy Icon"
-                            height="25"
-                            width="25"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                    <td className='w-[15%] py-2 border border-white'>
-                      <div className='flex justify-center items-center'>
-                        <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
-                          onClick={() => handleEdit(item.id)}>
-                          <img
-                            src="/icons/edit.svg"
-                            alt="Copy Icon"
-                            height="25"
-                            width="25"
-                          />
-                        </div>
-                        <div className='cursor-pointer p-1 rounded-full hover:bg-gray-300/30 active:bg-gray-400/50'
-                          onClick={() => handleDelete(item.id)}>
-                          <img
-                            src="/icons/delete.svg"
-                            alt="Copy Icon"
-                            height="25"
-                            width="25"
-                          />
-                        </div>
-                      </div>
-                    </td>
+            <>
+              {/* Mobile: 2-column table */}
+              <table className="table-auto w-full rounded-lg overflow-hidden md:hidden">
+                <thead className='bg-sky-800 text-white'>
+                  <tr>
+                    <th className='py-2 text-center text-sm'>Data</th>
+                    <th className='py-2 text-center text-sm'>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className='bg-sky-200'>
+                  {passwordArray.map(item => (
+                    <tr key={item.id} className="border-t border-white">
+                      <td className='align-middle px-3 py-3'>
+                        <div className="space-y-2 text-sm">
+                          <div>
+                            <div className="mt-0.5 flex items-center gap-1">
+                              <a
+                                href={item.site}
+                                target='_blank'
+                                className='break-all text-sky-700 underline-offset-2 hover:underline'
+                              >
+                                {item.site}
+                              </a>
+                              <button
+                                className='cursor-pointer p-1 rounded-full hover:bg-gray-300/40 active:bg-gray-400/50 transition-colors'
+                                onClick={() => copyText(item.site)}
+                              >
+                                <img
+                                  src="/icons/copy.svg"
+                                  alt="Copy Icon"
+                                  height="18"
+                                  width="18"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mt-0.5 flex items-center gap-1">
+                              <span className='break-all'>{item.username}</span>
+                              <button
+                                className='cursor-pointer p-1 rounded-full hover:bg-gray-300/40 active:bg-gray-400/50 transition-colors'
+                                onClick={() => copyText(item.username)}
+                              >
+                                <img
+                                  src="/icons/copy.svg"
+                                  alt="Copy Icon"
+                                  height="18"
+                                  width="18"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="mt-0.5 flex items-center gap-1">
+                              <span className='break-all'>{'*'.repeat(item.password?.length)}</span>
+                              <button
+                                className='cursor-pointer p-1 rounded-full hover:bg-gray-300/40 active:bg-gray-400/50 transition-colors'
+                                onClick={() => copyText(item.password)}
+                              >
+                                <img
+                                  src="/icons/copy.svg"
+                                  alt="Copy Icon"
+                                  height="18"
+                                  width="18"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className='align-middle px-3 py-3'>
+                        <div className="flex flex-col items-center justify-center gap-2">
+                          <button
+                            className='cursor-pointer p-1 rounded-full hover:bg-gray-300/40 active:bg-gray-400/50 transition-colors'
+                            onClick={() => handleEdit(item.id)}
+                          >
+                            <img
+                              src="/icons/edit.svg"
+                              alt="Edit Icon"
+                              height="22"
+                              width="22"
+                            />
+                          </button>
+                          <button
+                            className='cursor-pointer p-1 rounded-full hover:bg-gray-300/40 active:bg-gray-400/50 transition-colors'
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <img
+                              src="/icons/delete.svg"
+                              alt="Delete Icon"
+                              height="22"
+                              width="22"
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Desktop: 4-column table */}
+              <table className="table-auto w-full rounded-lg overflow-hidden hidden md:table">
+                <thead className='bg-sky-800 text-white'>
+                  <tr>
+                    <th className='py-2'>Site</th>
+                    <th className='py-2'>Username</th>
+                    <th className='py-2'>Password</th>
+                    <th className='py-2'>Actions</th>
+                  </tr>
+                </thead>
+                <tbody className='bg-sky-200'>
+                  {passwordArray.map(item => (
+                    <tr key={item.id}>
+                      <td className='w-[28%] py-2 border border-white'>
+                        <div className='flex justify-center items-center gap-1'>
+                          <a href={item.site} target='_blank' className='break-all'>{item.site}</a>
+                          <div className='cursor-pointer p-1 rounded-full hover:bg-gray-400/30 active:bg-gray-400/50 transition-colors'
+                            onClick={() => copyText(item.site)}>
+                            <img
+                              src="/icons/copy.svg"
+                              alt="Copy Icon"
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className='w-[28%] py-2 border border-white'>
+                        <div className='flex justify-center items-center gap-1'>
+                          <span className='break-all'>{item.username}</span>
+                          <div className='cursor-pointer p-1 rounded-full hover:bg-gray-400/30 active:bg-gray-400/50 transition-colors'
+                            onClick={() => copyText(item.username)}>
+                            <img
+                              src="/icons/copy.svg"
+                              alt="Copy Icon"
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className='w-[28%] py-2 border border-white'>
+                        <div className='flex justify-center items-center gap-1'>
+                          <span className='break-all'>{'*'.repeat(item.password?.length)}</span>
+                          <div className='cursor-pointer p-1 rounded-full hover:bg-gray-400/30 active:bg-gray-400/50 transition-colors'
+                            onClick={() => copyText(item.password)}>
+                            <img
+                              src="/icons/copy.svg"
+                              alt="Copy Icon"
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className='w-[15%] py-2 border border-white'>
+                        <div className='flex justify-center items-center'>
+                          <div className='cursor-pointer p-1 rounded-full hover:bg-gray-400/30 active:bg-gray-400/50 transition-colors'
+                            onClick={() => handleEdit(item.id)}>
+                            <img
+                              src="/icons/edit.svg"
+                              alt="Copy Icon"
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                          <div className='cursor-pointer p-1 rounded-full hover:bg-gray-400/30 active:bg-gray-400/50 transition-colors'
+                            onClick={() => handleDelete(item.id)}>
+                            <img
+                              src="/icons/delete.svg"
+                              alt="Copy Icon"
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
           )}
         </div>
       </div>
