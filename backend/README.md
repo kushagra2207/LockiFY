@@ -249,6 +249,8 @@ All password operations (create, read, update) handle encryption/decryption auto
 - SQL injection protection via parameterized queries
 - Error handling with try-catch blocks
 
-## Author
+---
 
-Kushagra Kumar Arora
+**For complete project information, see [../README.md](../README.md)**
+
+**For frontend details, see [../frontend/README.md](../frontend/README.md)**

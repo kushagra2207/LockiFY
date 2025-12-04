@@ -180,6 +180,8 @@ Ensure the backend server is running on port 3000.
 ### CORS Errors
 Verify that the backend has the correct frontend URL in CORS configuration.
 
-## Author
+---
 
-Kushagra Kumar Arora
+**For complete project information, see [../README.md](../README.md)**
+
+**For backend API details, see [../backend/README.md](../backend/README.md)**

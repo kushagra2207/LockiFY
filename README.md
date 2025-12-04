@@ -162,3 +162,13 @@ LockiFY/
 
 - zxcvbn library for password strength estimation
 - React and Express.js communities
+
+## Author
+
+Kushagra Kumar Arora
+
+---
+
+**For detailed backend API documentation and configuration, please refer to [backend/README.md](backend/README.md)**
+
+**For frontend setup and component documentation, please refer to [frontend/README.md](frontend/README.md)**
