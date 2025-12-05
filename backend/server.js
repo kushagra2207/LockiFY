@@ -23,7 +23,8 @@ app.use(passport.session())
 app.use('/api/auth', authRoutes)
 app.use('/api/passwords', passwordRoutes)
 
-app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`))
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => console.log(`Server listening on port ${process.env.PORT}`))
 
 // Test
 app.get('/', (req, res) => {
