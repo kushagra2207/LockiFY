@@ -8,7 +8,7 @@ const Icon = ({ name }) => {
   switch (name) {
     case 'lock':
       return (
-        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 11c.9 0 1.7.5 2.1 1.3M5 11h14v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 11V8a4 4 0 118 0v3" />
         </svg>
@@ -19,13 +19,13 @@ const Icon = ({ name }) => {
       )
     case 'shield':
       return (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l8 4v6c0 5-3.5 9.7-8 11-4.5-1.3-8-6-8-11V6l8-4z" />
         </svg>
       )
     case 'bolt':
       return (
-        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </svg>
       )
@@ -58,81 +58,94 @@ const Home = () => {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-64px)] overflow-hidden py-16 px-4 sm:px-6 lg:px-8">
+    <div className="relative py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50/40 via-transparent to-sky-100" />
       <div className="absolute left-1/2 top-16 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-sky-300/40 blur-[100px]" />
       <div className="absolute right-10 bottom-10 -z-10 h-64 w-64 rounded-full bg-blue-200/40 blur-[90px]" />
 
-      <section className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-12">
-        <div className="text-center">
-          <h1 className='font-bold text-5xl sm:text-6xl tracking-tight'>
+      <section className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 sm:gap-12 lg:gap-16">
+        <div className="text-center space-y-6 sm:space-y-8">
+          <h1 className='font-bold text-5xl sm:text-6xl lg:text-7xl tracking-tight'>
             <span className='text-sky-600'>&lt;</span>
             <span>Locki</span>
             <span className='text-sky-600'>FY/&gt;</span>
           </h1>
-          <p className='mt-3 text-sky-900 text-xl sm:text-2xl'>Your own password manager</p>
+          <p className='text-sky-900 text-xl sm:text-2xl lg:text-3xl font-medium'>Your own password manager</p>
+          
+          <p className="mx-auto max-w-2xl text-base sm:text-lg lg:text-xl text-sky-950/75 leading-relaxed px-4">
+            LockiFY keeps every password secure, searchable, and ready when you are. A calm interface, Google OAuth, and
+            encrypted storage make managing credentials feel effortless.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <button
+              className="group relative rounded-full bg-sky-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-sky-600/30 hover:bg-sky-700 hover:shadow-xl hover:shadow-sky-600/40 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              onClick={handleGetStarted}
+              disabled={loading}
+              aria-label="Get started with LockiFY">
+              {loading ? 'Loading...' : 'Get Started'}
+            </button>
+            <button
+              className="rounded-full border-2 border-sky-600/20 bg-white/80 backdrop-blur-sm px-8 py-3.5 text-base font-semibold text-sky-700 hover:border-sky-600/40 hover:bg-white transition-all duration-200 active:scale-95"
+              onClick={() => {
+                document.getElementById('features-section')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              aria-label="Learn more about features">
+              Learn More
+            </button>
+          </div>
         </div>
 
-        <div className="mx-auto max-w-3xl text-center text-lg text-sky-950/80">
-          LockiFY keeps every password secure, searchable, and ready when you are. A calm interface, Google OAuth, and
-          encrypted storage make managing credentials feel effortless.
-        </div>
+        <section id="features-section" className="mt-8 sm:mt-12 w-full space-y-8 sm:space-y-10 px-1 sm:px-0">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">Why Choose LockiFY</h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">Built with security, simplicity, and your peace of mind in focus</p>
+          </div>
 
-        <div className="flex w-full items-center justify-center">
-          <button
-            className="rounded-full bg-sky-600 px-8 py-3 text-sm font-semibold text-white shadow hover:scale-[1.02] transition-transform cursor-pointer"
-            onClick={handleGetStarted}>
-            Get Started
-          </button>
-        </div>
-
-        <section className="mt-6 w-full space-y-5 px-1 sm:px-0">
-          <h2 className="text-3xl font-semibold text-slate-900 text-center">Why LockiFY</h2>
-
-          <div className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-5 md:grid-cols-2">
-            <article className="group flex items-start gap-4 rounded-2xl border border-sky-50 bg-white/60 p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1">
-              <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-sky-100 to-sky-200 text-sky-700">
+          <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2">
+            <article className="group cursor-default flex flex-col sm:flex-row items-start gap-4 rounded-2xl border border-sky-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-sky-200 hover:-translate-y-1 transition-all duration-300">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-sky-100 to-sky-200 text-sky-700 group-hover:scale-110 transition-transform duration-300">
                 <Icon name="lock" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-slate-900">End-to-end encryption</p>
-                <p className="mt-1 text-sm md:text-base text-slate-600">
+              <div className="space-y-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900">End-to-end encryption</h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                   Passwords are encrypted locally before leaving your device — only you can decrypt them.
                 </p>
               </div>
             </article>
 
-            <article className="group flex items-start gap-4 rounded-2xl border border-sky-50 bg-white/60 p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg translate-y-0.5">
+            <article className="group cursor-default flex flex-col sm:flex-row items-start gap-4 rounded-2xl border border-sky-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-sky-200 hover:-translate-y-1 transition-all duration-300">
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl group-hover:scale-110 transition-transform duration-300">
                 <Icon name="google" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-slate-900">Google sign-in</p>
-                <p className="mt-1 text-sm md:text-base text-slate-600">
+              <div className="space-y-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900">Google sign-in</h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                   Quick, familiar authentication — with secure session handling and least-privilege tokens.
                 </p>
               </div>
             </article>
 
-            <article className="group flex items-start gap-4 rounded-2xl border border-sky-50 bg-white/60 p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1">
-              <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 text-indigo-700">
+            <article className="group cursor-default flex flex-col sm:flex-row items-start gap-4 rounded-2xl border border-indigo-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-indigo-200 hover:-translate-y-1 transition-all duration-300">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-purple-100 text-indigo-700 group-hover:scale-110 transition-transform duration-300">
                 <Icon name="shield" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-slate-900">Strength insights</p>
-                <p className="mt-1 text-sm md:text-base text-slate-600">
+              <div className="space-y-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900">Strength insights</h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                   Real-time strength feedback helps you avoid weak or reused passwords, with suggestions when needed.
                 </p>
               </div>
             </article>
 
-            <article className="group flex items-start gap-4 rounded-2xl border border-sky-50 bg-white/60 p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1">
-              <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 text-emerald-700">
+            <article className="group cursor-default flex flex-col sm:flex-row items-start gap-4 rounded-2xl border border-emerald-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-emerald-200 hover:-translate-y-1 transition-all duration-300">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 text-emerald-700 group-hover:scale-110 transition-transform duration-300">
                 <Icon name="bolt" />
               </div>
-              <div>
-                <p className="text-lg font-semibold text-slate-900">One-click actions</p>
-                <p className="mt-1 text-sm md:text-base text-slate-600">
+              <div className="space-y-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900">One-click actions</h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
                   Copy usernames, passwords, or URLs instantly and manage entries without breaking your flow.
                 </p>
               </div>
@@ -140,35 +153,40 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="mt-10 w-full space-y-5 px-1 sm:px-0">
-          <h2 className="text-3xl font-semibold text-slate-900 text-center">Three steps</h2>
+        <section className="mt-8 sm:mt-12 w-full space-y-8 sm:space-y-10 px-1 sm:px-0 pb-8">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900">Get Started in Three Steps</h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">Simple, secure, and straightforward password management</p>
+          </div>
 
-          <div className="flex w-full flex-col gap-5 lg:flex-row">
+          <div className="flex w-full flex-col gap-6 lg:flex-row max-w-5xl mx-auto">
             {[
               {
-                num: '01',
+                num: '1',
                 title: 'Sign in securely',
-                desc:
-                  'Use Google OAuth and secure cookies to access your private vault safely from any device.'
+                desc: 'Use Google OAuth and secure cookies to access your private vault safely from any device.'
               },
               {
-                num: '02',
+                num: '2',
                 title: 'Store credentials',
                 desc: 'Add sites, usernames, and passwords that are encrypted before being saved to the database.'
               },
               {
-                num: '03',
+                num: '3',
                 title: 'Stay organized',
                 desc: 'Edit, update, and copy passwords from a clean, focused table designed for everyday use.'
               }
             ].map((s) => (
-              <div key={s.num} className="flex flex-1 items-start gap-4 rounded-2xl border border-slate-100 bg-white/60 p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-100 to-sky-200 text-sky-700 font-semibold">
+              <div 
+                key={s.num} 
+                className="group cursor-default flex flex-1 flex-col items-start gap-4 rounded-2xl border border-sky-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-sky-200 hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white font-bold text-2xl shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
                   {s.num}
                 </div>
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">{s.title}</p>
-                  <p className="mt-1 text-sm md:text-base text-slate-600">{s.desc}</p>
+                <div className="space-y-2">
+                  <h3 className="text-lg sm:text-xl font-semibold text-slate-900">{s.title}</h3>
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             ))}
