@@ -1,9 +1,20 @@
 const jwt = require('jsonwebtoken')
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const googleAuthSuccess = (req, res) => {
     const user = req.user
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' })
-    res.cookie('token', token, { httpOnly: true, sameSite: 'lax' })
+    const token = jwt.sign(
+        { id: user.id, email: user.email }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '7d' }
+    )
+    res.cookie('token', token, { 
+        httpOnly: true, 
+        sameSite: isProd ? 'none' : 'lax',
+        secure: isProd,
+        path: '/'
+    })
     res.redirect(`${process.env.FRONTEND_URL}/passwords`)
 }
 
@@ -20,7 +31,12 @@ const me = (req, res) => {
 }
 
 const logout = (req, res) => {
-    res.clearCookie('token')
+    res.clearCookie('token', {
+        httpOnly: true, 
+        sameSite: isProd ? 'none' : 'lax',
+        secure: isProd,
+        path: '/'
+    })
     res.json({ message: "Logged Out" })
 }
 
