@@ -35,7 +35,7 @@ const Icon = ({ name }) => {
 }
 
 const Home = () => {
-  const { user, loading, handleLogin } = useAuth()
+  const { user, loading, serverOnline, handleLogin } = useAuth()
   const navigate = useNavigate()
 
   const safeLogin = async () => {
@@ -63,6 +63,24 @@ const Home = () => {
       <div className="absolute left-1/2 top-16 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-sky-300/40 blur-[100px]" />
       <div className="absolute right-10 bottom-10 -z-10 h-64 w-64 rounded-full bg-blue-200/40 blur-[90px]" />
 
+      {(loading || !serverOnline) && (
+        <div className="fixed bottom-4 right-4 z-50">
+          {loading && serverOnline && (
+            <div className="rounded-full bg-slate-900/90 text-slate-50 text-xs px-3 py-1.5 shadow-lg flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+              <span>Connecting to server…</span>
+            </div>
+          )}
+
+          {!loading && !serverOnline && (
+            <div className="rounded-full bg-red-600 text-white text-xs px-3 py-1.5 shadow-lg flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-white/80" />
+              <span>Server unreachable</span>
+            </div>
+          )}
+        </div>
+      )}
+
       <section className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 sm:gap-12 lg:gap-16">
         <div className="text-center space-y-6 sm:space-y-8">
           <h1 className='font-bold text-5xl sm:text-6xl lg:text-7xl tracking-tight'>
@@ -71,7 +89,7 @@ const Home = () => {
             <span className='text-sky-600'>FY/&gt;</span>
           </h1>
           <p className='text-sky-900 text-xl sm:text-2xl lg:text-3xl font-medium'>Your own password manager</p>
-          
+
           <p className="mx-auto max-w-2xl text-base sm:text-lg lg:text-xl text-sky-950/75 leading-relaxed px-4">
             LockiFY keeps every password secure, searchable, and ready when you are. A calm interface, Google OAuth, and
             encrypted storage make managing credentials feel effortless.
@@ -177,8 +195,8 @@ const Home = () => {
                 desc: 'Edit, update, and copy passwords from a clean, focused table designed for everyday use.'
               }
             ].map((s) => (
-              <div 
-                key={s.num} 
+              <div
+                key={s.num}
                 className="group cursor-default flex flex-1 flex-col items-start gap-4 rounded-2xl border border-sky-100/80 bg-white/70 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-sky-200 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white font-bold text-2xl shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">

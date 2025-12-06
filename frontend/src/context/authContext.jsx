@@ -6,14 +6,23 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [serverOnline, setServerOnline] = useState(true)
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const data = await getCurrentUser()
                 setUser(data)
-            } catch {
-                setUser(null)
+                setServerOnline(true)
+            } catch (err) {
+                if (err?.response && err.response.status === 401) {
+                    setUser(null)
+                    setServerOnline(true)
+                }
+                else {
+                    setUser(null)
+                    setServerOnline(false)
+                }
             } finally {
                 setLoading(false)
             }
@@ -36,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, handleLogin, handleLogout }}>
+        <AuthContext.Provider value={{ user, loading, serverOnline, handleLogin, handleLogout }}>
             {children}
         </AuthContext.Provider>
     )
