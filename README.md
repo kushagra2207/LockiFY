@@ -6,6 +6,11 @@ A secure, modern password manager built with React and Node.js, featuring Google
 
 LockiFY is a full-stack password management application that allows users to securely store, manage, and organize their passwords. The application prioritizes security with encryption, rate limiting, and robust authentication mechanisms.
 
+## Links
+
+- Live Demo: https://lockify-tau.vercel.app/
+- Video Demo: https://youtu.be/KJRxeqIdCic
+
 ## Features
 
 - **Secure Password Storage**: AES encryption for all stored passwords
